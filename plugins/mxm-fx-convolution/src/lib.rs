@@ -804,6 +804,7 @@ fn seconds_to_samples(seconds: f32, sample_rate: f32) -> u64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use nice_plug::context::process::SendEventError;
     use nice_plug::params::internals::ParamPtr;
     use nice_plug::params::{InternalParamMut, Param};
     use std::sync::Mutex;
@@ -811,6 +812,8 @@ mod tests {
     struct ApplyingHost;
 
     impl nice_plug::context::gui::GuiContextInner for ApplyingHost {
+        // A test double has no host to ask for a restart (nice-plug 0.4).
+        fn request_restart(&self) {}
         fn plugin_api(&self) -> PluginApi {
             PluginApi::Clap
         }
@@ -846,6 +849,8 @@ mod tests {
     }
 
     impl ProcessContext<MxmFxConvolution> for TestProcessContext {
+        // A test double has no host to ask for a restart (nice-plug 0.4).
+        fn request_restart(&self) {}
         fn plugin_api(&self) -> PluginApi {
             PluginApi::Clap
         }
@@ -859,7 +864,12 @@ mod tests {
         fn next_event(&mut self) -> Option<NoteEvent<()>> {
             None
         }
-        fn send_event(&mut self, _event: NoteEvent<()>) {}
+        fn try_send_event(
+            &mut self,
+            _event: NoteEvent<()>,
+        ) -> Result<(), (NoteEvent<()>, SendEventError)> {
+            Ok(())
+        }
         fn set_latency_samples(&self, _samples: u32) {}
         fn set_current_voice_capacity(&self, _capacity: u32) {}
     }
