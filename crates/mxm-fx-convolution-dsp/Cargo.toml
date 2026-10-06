@@ -1,0 +1,17 @@
+[package]
+name = "mxm-fx-convolution-dsp"
+description = "Framework-free DSP foundations for the mxm-fx-convolution effect"
+version.workspace = true
+edition.workspace = true
+# No dependencies at all: genuinely portable, so it does NOT inherit the 1.95 GUI floor.
+rust-version = "1.87"
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[dev-dependencies]
+# The listening demo writes through the collection's encoder. A test-only edge, so the shipped
+# graph keeps no dependencies at all.
+mxm-audio-file.workspace = true

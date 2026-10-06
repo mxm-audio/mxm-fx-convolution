@@ -1,0 +1,5 @@
+# Plugins from other MXM repositories that this repository's tests load, at pinned tags.
+# `cargo xtask fetch` builds each and places it in target/ (mxm-xtask's fetch).
+# repository     tag     profile
+mxm-mono-01       v0.1.0  release
+mxm-shimmer       v0.1.0  release

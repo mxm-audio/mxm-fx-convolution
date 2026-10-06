@@ -1,0 +1,37 @@
+[package]
+name = "mxm-fx-convolution"
+description = "A WAV-based convolution effect with reversible response preparation"
+version = "0.1.1"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+nice-plug.workspace = true
+nice-plug-egui.workspace = true
+mxm-ui.workspace = true
+mxm-preset.workspace = true
+mxm-tempo.workspace = true
+egui.workspace = true
+mxm-fx-convolution-dsp.workspace = true
+base64 = "=0.22.1"
+dirs = "=5.0.1"
+hound = "=3.5.1"
+rfd = "=0.15.4"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.145"
+
+[dev-dependencies]
+# The collection's shared headless checks (`crates/mxm-plugin-test`).
+mxm-plugin-test.workspace = true
+# `wgpu` renders a frame to pixels for the layout-tree review pictures
+# (`mxm_plugin_test::tree_checks`, `editor::proof::tree_pictures`). Test-only: nothing here reaches
+# the bundle.
+egui_kittest = { version = "=0.36.1", features = ["wgpu"] }
+image = { version = "=0.25.9", default-features = false, features = ["png"] }
+kittest = "=0.4.0"

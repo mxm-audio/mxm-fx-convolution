@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "_comment": [
+    "Which of mxm-fx-convolution's parameters fill the collection's control roles.",
+    "Roles come from docs/MXM_CONTROL_MAP.md, which is normative; parameters are named by",
+    "their permanent string id, never by display name.",
+    "",
+    "Mix fills the existing fx.reverb role: it is how much reverberant response is in what you hear.",
+    "Pre-delay and the wet shaping controls remain automatable but unmapped. They shape a response",
+    "rather than selecting how much reverb is present, and do not justify minting a dedicated",
+    "Convolution page."
+  ],
+  "instruments": [
+    {
+      "clap_id": "dk.mxm.mxm-fx-convolution",
+      "name": "mxm-fx-convolution",
+      "params": {
+        "fx.reverb": "mix"
+      }
+    }
+  ]
+}

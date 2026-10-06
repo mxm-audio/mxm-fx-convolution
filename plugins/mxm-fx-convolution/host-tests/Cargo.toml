@@ -1,0 +1,23 @@
+[package]
+name = "mxm-fx-convolution-host-tests"
+description = "mxm-fx-convolution hosted by MXM Player: behaviour and robustness through the real host, against its release bundle. The slow tier: `cargo test -p mxm-fx-convolution` never builds the player."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+# The tests are in `tests/`; the library is empty and not test-built.
+test = false
+doctest = false
+
+[dev-dependencies]
+mxm-player.workspace = true
+mxm-player-harness.workspace = true
+clack-extensions = { version = "=0.1.1", default-features = false, features = ["clack-host"] }
+clack-host = "=0.1.1"
+mxm-audio-file-decode.workspace = true
+serde_json = "=1.0.145"
