@@ -69,7 +69,8 @@ pub enum EditorTask {
         response: RetiredResponse,
     },
     /// Carries nothing: scheduled on the GUI path it asks the host for a process callback, which
-    /// wakes an effect a host has put to sleep (`vendor/nice-plug`'s GUI-task process-wake patch).
+    /// wakes an effect a host has put to sleep (`vendor/nice-plug`'s GUI-task process-wake patch;
+    /// since the split the mxm-audio/nice-plug fork, *GUI-task process wake* in its `PATCHES.md`).
     /// Sent after a preset is published, whose acknowledgement needs that callback.
     Wake,
 }

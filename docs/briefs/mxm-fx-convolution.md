@@ -1,6 +1,6 @@
 # mxm-fx-convolution — UI design brief
 
-Required by `MXM_DESIGN_SYSTEM.md` §14; Revision 7 is written before its clamp/Feedback editor rework.
+Required by mxm-kit's [`MXM_DESIGN_SYSTEM.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/MXM_DESIGN_SYSTEM.md) §14; Revision 7 is written before its clamp/Feedback editor rework.
 This is an owner-named, original convolution effect, not a hardware copy and not an interface derived from another product.
 Technique evidence is `research:effects/convolution-reverb.md`.
 

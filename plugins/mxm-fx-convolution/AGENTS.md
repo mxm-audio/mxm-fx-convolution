@@ -164,7 +164,7 @@ cargo test -p mxm-fx-convolution-dsp -p mxm-fx-convolution
 MXM_PICTURES=after cargo test -p mxm-fx-convolution --lib tree_pictures -- --ignored   # target/layout-tree/mxm-fx-convolution/after/
 cargo clippy -p mxm-fx-convolution-dsp -p mxm-fx-convolution --all-targets -- -D warnings
 cargo fmt --all -- --check
-cargo xtask bundle mxm-mono-01 --release # source used by the Player chain test
+cargo xtask fetch                        # test-bundles.txt; mxm-mono-01 is the Player chain's source
 
 # target/bundled is mutable: validate and test debug before replacing it.
 cargo xtask bundle mxm-fx-convolution
@@ -189,7 +189,7 @@ cargo test -p mxm-fx-convolution-host-tests --test robustness -- --nocapture
 - Coverage: [NOTES.md § What the focused tests cover](NOTES.md#what-the-focused-tests-cover). Past
   runs and artifact hashes: [NOTES.md § Past verification runs](NOTES.md#past-verification-runs).
 - Concurrent active-host restore, listening, native §15 visual QA, real DAW and Linux/macOS remain
-  later gates.
+  later gates. *Since the split:* tests run on Linux in WSL before a push, macOS by CI on `v*` tags.
 
 # Child DOX Index
 

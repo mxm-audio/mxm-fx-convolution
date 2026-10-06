@@ -4,7 +4,9 @@ An original convolution effect for embedded mono and stereo responses. It keeps 
 inside host state rather than depending on a source path, then applies it with a zero-delay direct
 head and partitioned FFT tail.
 
-Part of the [MXM Synth Collection](../../README.md). MIT licensed, CLAP only.
+Part of the MXM collection ([github.com/mxm-audio](https://github.com/mxm-audio)); this repository's
+[README](../../README.md). GPL-3.0-or-later — see the repository's [`LICENSE`](../../LICENSE) at its
+root. CLAP only.
 
 ## What it does
 

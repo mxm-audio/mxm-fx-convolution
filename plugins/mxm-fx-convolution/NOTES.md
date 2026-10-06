@@ -28,7 +28,7 @@ AGENTS.md is the contract; this file is the reference it links to.
 - `control-map.json` — the existing `fx.reverb` role assigned to Mix; no invented page or role.
 - `README.md` and `Cargo.toml` — product description, crate boundary and pinned dependencies. (The
   original list also named a `LICENSE` with MIT terms; there is none in this folder, and the licence
-  is the workspace's GPL-3.0-or-later.)
+  is GPL-3.0-or-later, the repository's root `LICENSE`.)
 
 ## Status
 
