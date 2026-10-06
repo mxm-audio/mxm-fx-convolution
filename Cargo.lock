@@ -2634,7 +2634,7 @@ dependencies = [
 [[package]]
 name = "mxm-player"
 version = "0.1.0"
-source = "git+https://github.com/mxm-audio/mxm-player?tag=v0.1.1#7d6795f86856969043bc5d9bfc8f2da58c659919"
+source = "git+https://github.com/mxm-audio/mxm-player?tag=v0.1.2#4a172969a05bd62db1ad43b6a630340b1f2de6a6"
 dependencies = [
  "clack-extensions",
  "clack-host",
@@ -2660,7 +2660,7 @@ dependencies = [
 [[package]]
 name = "mxm-player-harness"
 version = "0.1.0"
-source = "git+https://github.com/mxm-audio/mxm-player?tag=v0.1.1#7d6795f86856969043bc5d9bfc8f2da58c659919"
+source = "git+https://github.com/mxm-audio/mxm-player?tag=v0.1.2#4a172969a05bd62db1ad43b6a630340b1f2de6a6"
 dependencies = [
  "clack-extensions",
  "clack-host",
