@@ -24,18 +24,18 @@ repository = "https://github.com/mxm-audio/mxm-fx-convolution"
 
 [workspace.dependencies]
 # Pinned exactly, as in every MXM repository; Cargo.lock is committed. Own crates by path,
-# the kit's from mxm-kit v0.3.0, another product's from its repository at v0.1.0.
+# the kit's from mxm-kit v0.3.1, another product's from its repository at v0.1.0.
 egui = "=0.36.1"
-mxm-audio-file = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
-mxm-audio-file-decode = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
+mxm-audio-file = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
+mxm-audio-file-decode = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
 mxm-fx-convolution-dsp = { path = "crates/mxm-fx-convolution-dsp" }
 mxm-player = { git = "https://github.com/mxm-audio/mxm-player", tag = "v0.1.0" }
 mxm-player-harness = { git = "https://github.com/mxm-audio/mxm-player", tag = "v0.1.0" }
-mxm-plugin-test = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
-mxm-preset = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
-mxm-tempo = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
-mxm-ui = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
-mxm-xtask = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.0" }
+mxm-plugin-test = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
+mxm-preset = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
+mxm-tempo = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
+mxm-ui = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
+mxm-xtask = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
 nice-plug = { version = "=0.3.0", default-features = false, features = ["editor", "assert_process_allocs"] }
 nice-plug-egui = { version = "=0.4.0", default-features = false, features = ["opengl"] }
 
