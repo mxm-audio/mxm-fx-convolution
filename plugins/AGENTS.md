@@ -7,7 +7,7 @@ Parent: [`../AGENTS.md`](../AGENTS.md)
 This repository's CLAP plugin: a thin nice-plug shell over the framework-free DSP crate —
 parameters, host contract, event handling and an editor. It keeps the conventions every MXM
 plugin keeps. The full text, with the reasons, measurements and history, is mxm-kit's
-[`docs/plugin-conventions.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md) (in the workspace: `kit/mxm-kit/docs/plugin-conventions.md`);
+[`docs/plugin-conventions.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md);
 this file is their contract, one line per rule, each linking to its section. What is true of this
 machine only lives in its own `AGENTS.md` below.
 

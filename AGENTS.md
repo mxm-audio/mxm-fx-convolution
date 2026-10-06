@@ -171,8 +171,8 @@ cargo xtask fetch                            # plugins from other repositories i
 cargo test -p mxm-fx-convolution-host-tests            # the slow tier: through MXM Player
 ```
 
-Before a push, run the first three on Windows and again on Linux in WSL (the workspace's
-`wsl/AGENTS.md`). CI runs the same on Windows, macOS and Linux, but only on `v*` release tags or
+Before a push, run the first three on Windows and again on Linux (a Linux machine, or WSL
+on Windows). CI runs the same on Windows, macOS and Linux, but only on `v*` release tags or
 when started by hand (the owner, 2026-10-06), so only CI reaches macOS.
 
 # Child DOX Index
