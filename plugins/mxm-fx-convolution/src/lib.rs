@@ -1025,7 +1025,12 @@ mod tests {
     #[test]
     fn the_starter_render_matches_the_normalised_golden_digest() {
         const GOLDEN: u64 = 6364300162752919026;
-        assert_eq!(render_digest(prepared(1)), GOLDEN);
+        let rendered = render_digest(prepared(1));
+        // Windows' bits: each platform's maths library rounds in its own way, so Linux and macOS
+        // render other bits (the owner, 2026-10-06: pin on Windows only).
+        if cfg!(target_os = "windows") {
+            assert_eq!(rendered, GOLDEN);
+        }
     }
 
     #[test]
