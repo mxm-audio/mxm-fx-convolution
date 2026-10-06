@@ -189,7 +189,7 @@ cargo test -p mxm-fx-convolution-host-tests --test robustness -- --nocapture
 - Coverage: [NOTES.md § What the focused tests cover](NOTES.md#what-the-focused-tests-cover). Past
   runs and artifact hashes: [NOTES.md § Past verification runs](NOTES.md#past-verification-runs).
 - Concurrent active-host restore, listening, native §15 visual QA, real DAW and Linux/macOS remain
-  later gates. *Since the split:* tests run on Linux in WSL before a push, macOS by CI on `v*` tags.
+  later gates. *Since the split:* Linux and macOS are checked later, together, and by CI on `v*` tags.
 
 # Child DOX Index
 
