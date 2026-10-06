@@ -29,8 +29,8 @@ egui = "=0.36.1"
 mxm-audio-file = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
 mxm-audio-file-decode = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
 mxm-fx-convolution-dsp = { path = "crates/mxm-fx-convolution-dsp" }
-mxm-player = { git = "https://github.com/mxm-audio/mxm-player", tag = "v0.1.0" }
-mxm-player-harness = { git = "https://github.com/mxm-audio/mxm-player", tag = "v0.1.0" }
+mxm-player = { git = "https://github.com/mxm-audio/mxm-player", tag = "v0.1.1" }
+mxm-player-harness = { git = "https://github.com/mxm-audio/mxm-player", tag = "v0.1.1" }
 mxm-plugin-test = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
 mxm-preset = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
 mxm-tempo = { git = "https://github.com/mxm-audio/mxm-kit", tag = "v0.3.1" }
