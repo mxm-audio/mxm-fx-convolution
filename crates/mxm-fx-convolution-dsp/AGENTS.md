@@ -180,7 +180,7 @@ Off/reset/wake, pre-delay and post-stage activity, finite hostile output, fallib
 structural subnormal flushing. The timing example is scoped
 Windows evidence only. Listening, plugin callback
 allocation instrumentation, broader WAV compatibility, host tail/latency,
-Linux/macOS and real-DAW behavior are later gates. *Since the split (2026-10-06):* Linux and macOS are checked later, together, and by CI on `v*` tags or by hand.
+Linux/macOS and real-DAW behavior are later gates. *Since the split (2026-10-06):* Linux and macOS are checked later, together, and by CI when started by hand.
 
 # Child DOX Index
 
