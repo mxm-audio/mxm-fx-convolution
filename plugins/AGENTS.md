@@ -80,6 +80,8 @@ machine only lives in its own `AGENTS.md` below.
 - **Keyboard cursor** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#the-keyboard-cursor-runs-in-every-editor-and-each-one-owes-it-three-things)):
   `panel` takes a `navigation::State`, calls `navigation::paged` before the cards, and wraps each
   control in `navigation::at`; prove it with `keyboard_checks::the_cursor_reaches_and_operates`.
+  **F1 shows the keys**, a sheet built from the keymap in use, and `Escape` closes it: the cursor
+  draws it in every editor, with nothing to wire (the owner, 2026-10-08, as newDAWn).
 - **Modulation display** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#a-knob-shows-the-parameter-modulation-is-drawn-over-it)): the
   knob draws the unmodulated value and an arc to the modulated one; a drag draws its own delta.
 - **Licensing** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#licensing)): GPL-3.0-or-later, the repository's `LICENSE`; decide
