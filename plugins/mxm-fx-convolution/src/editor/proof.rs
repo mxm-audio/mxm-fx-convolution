@@ -71,6 +71,7 @@ impl nice_plug::context::gui::GuiContextInner for ApplyingHost {
 }
 
 use mxm_plugin_test::keyboard_checks;
+use mxm_plugin_test::keyboard_checks::{OUT, VALUE, key_of};
 use mxm_plugin_test::paging_checks;
 
 fn panel_state() -> (
@@ -434,8 +435,8 @@ fn all_eight_live_knobs_emit_exactly_one_balanced_host_gesture() {
         harness.run_steps(8);
         let control = harness.get_by_label(name);
         control.focus();
-        // VALUE + ↑, kept with OUT: W, ↑ and Tab in the default keymap.
-        for key in [egui::Key::W, egui::Key::ArrowUp, egui::Key::Tab] {
+        // VALUE + ↑, kept with OUT.
+        for key in [key_of(VALUE), egui::Key::ArrowUp, key_of(OUT)] {
             harness.key_press(key);
         }
         harness.run_steps(2);
@@ -568,13 +569,13 @@ fn a_held_arrow_on_a_preparation_slider_submits_where_it_stopped() {
     harness.run_steps(4);
     let before = edits.lock().unwrap().len();
 
-    // A held VALUE + ↑ (W in the default keymap): the edit ends when VALUE is let go.
-    harness.key_down(egui::Key::W);
+    // A held VALUE + ↑: the edit ends when VALUE is let go.
+    harness.key_down(key_of(VALUE));
     harness.key_down(egui::Key::ArrowUp);
     harness.run_steps(6);
     harness.key_up(egui::Key::ArrowUp);
     harness.run_steps(2);
-    harness.key_up(egui::Key::W);
+    harness.key_up(key_of(VALUE));
     harness.run_steps(4);
 
     let edits = edits.lock().unwrap();
