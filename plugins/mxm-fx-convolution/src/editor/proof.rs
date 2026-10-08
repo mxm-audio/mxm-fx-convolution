@@ -434,7 +434,10 @@ fn all_eight_live_knobs_emit_exactly_one_balanced_host_gesture() {
         harness.run_steps(8);
         let control = harness.get_by_label(name);
         control.focus();
-        harness.key_press(egui::Key::ArrowUp);
+        // VALUE + ↑, kept with OUT: W, ↑ and Tab in the default keymap.
+        for key in [egui::Key::W, egui::Key::ArrowUp, egui::Key::Tab] {
+            harness.key_press(key);
+        }
         harness.run_steps(2);
         host.assert_gesture(name);
     }
@@ -565,9 +568,13 @@ fn a_held_arrow_on_a_preparation_slider_submits_where_it_stopped() {
     harness.run_steps(4);
     let before = edits.lock().unwrap().len();
 
+    // A held VALUE + ↑ (W in the default keymap): the edit ends when VALUE is let go.
+    harness.key_down(egui::Key::W);
     harness.key_down(egui::Key::ArrowUp);
     harness.run_steps(6);
     harness.key_up(egui::Key::ArrowUp);
+    harness.run_steps(2);
+    harness.key_up(egui::Key::W);
     harness.run_steps(4);
 
     let edits = edits.lock().unwrap();
