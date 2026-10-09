@@ -837,6 +837,7 @@ dependencies = [
  "bitflags 2.13.1",
  "clack-common",
  "clack-host",
+ "clack-plugin",
  "clap-sys",
 ]
 
@@ -847,9 +848,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0f0d9f10d8ea9b1b79863aefb41fb8eae144db8491557cc58f91e16c8be32e55"
 dependencies = [
  "clack-common",
+ "clack-plugin",
  "clap-sys",
  "libloading 0.8.9",
  "objc2-foundation 0.3.2",
+]
+
+[[package]]
+name = "clack-plugin"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2fa04a5185c367bfd5566e616c9c20cec2abaee9bf8a6060a3f6e44b505d5f32"
+dependencies = [
+ "clack-common",
+ "clap-sys",
 ]
 
 [[package]]
@@ -886,6 +898,12 @@ checksum = "2ec7c5eb7a16992b1904d76c517d170ab353b0e0b3d5a0c81a8a0cd1037893cf"
 dependencies = [
  "bytemuck",
 ]
+
+[[package]]
+name = "com-scrape-types"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ce183b975b8fc736a20919c4002717255fbd867df575c792aeefa9a56a73ad0"
 
 [[package]]
 name = "combine"
@@ -2548,7 +2566,7 @@ dependencies = [
 [[package]]
 name = "mxm-audio-file"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "aifc",
  "flacenc",
@@ -2558,7 +2576,7 @@ dependencies = [
 [[package]]
 name = "mxm-audio-file-decode"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "symphonia",
 ]
@@ -2566,7 +2584,7 @@ dependencies = [
 [[package]]
 name = "mxm-control-map"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "serde",
  "serde_json",
@@ -2617,17 +2635,17 @@ dependencies = [
 [[package]]
 name = "mxm-keys"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 
 [[package]]
 name = "mxm-modulation"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 
 [[package]]
 name = "mxm-modulation-params"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "egui",
  "mxm-modulation",
@@ -2639,7 +2657,7 @@ dependencies = [
 [[package]]
 name = "mxm-player"
 version = "0.1.0"
-source = "git+https://github.com/mxm-audio/mxm-player?branch=main#30b7b61dda122f16f5cf067016884f1657423fff"
+source = "git+https://github.com/mxm-audio/mxm-player?branch=main#480c80f4ca92f8588b4a5ff8d17aa36795a5f698"
 dependencies = [
  "clack-extensions",
  "clack-host",
@@ -2654,6 +2672,7 @@ dependencies = [
  "mxm-audio-file",
  "mxm-control-map",
  "mxm-ui",
+ "mxm-vst3-host",
  "raw-window-handle",
  "rtrb",
  "serde",
@@ -2665,7 +2684,7 @@ dependencies = [
 [[package]]
 name = "mxm-player-harness"
 version = "0.2.1"
-source = "git+https://github.com/mxm-audio/mxm-player?branch=main#30b7b61dda122f16f5cf067016884f1657423fff"
+source = "git+https://github.com/mxm-audio/mxm-player?branch=main#480c80f4ca92f8588b4a5ff8d17aa36795a5f698"
 dependencies = [
  "clack-extensions",
  "clack-host",
@@ -2678,7 +2697,7 @@ dependencies = [
 [[package]]
 name = "mxm-plugin-test"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "egui",
  "egui_kittest",
@@ -2692,7 +2711,7 @@ dependencies = [
 [[package]]
 name = "mxm-preset"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "dirs",
  "egui",
@@ -2706,12 +2725,12 @@ dependencies = [
 [[package]]
 name = "mxm-tempo"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 
 [[package]]
 name = "mxm-ui"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "dirs",
  "egui",
@@ -2721,9 +2740,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "mxm-vst3-host"
+version = "0.4.1"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
+dependencies = [
+ "clack-extensions",
+ "clack-plugin",
+ "libc",
+ "libloading 0.8.9",
+ "objc2 0.6.4",
+ "objc2-app-kit 0.3.2",
+ "objc2-foundation 0.3.2",
+ "rtrb",
+ "vst3",
+ "windows-sys 0.61.2",
+ "x11rb",
+]
+
+[[package]]
 name = "mxm-xtask"
 version = "0.4.1"
-source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#06d923d81480a7c66006b8ca226e99bf9b281d0e"
+source = "git+https://github.com/mxm-audio/mxm-kit?branch=main#c9b313fb7c4567af934c40be58d5fa956a51d25a"
 dependencies = [
  "anyhow",
  "mxm-control-map",
@@ -4834,6 +4871,15 @@ name = "version_check"
 version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
+
+[[package]]
+name = "vst3"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e31e3fe7a6f028ded8c5a9984cf283319e6dc63572c9b71da1d4ee9d71d3b6bf"
+dependencies = [
+ "com-scrape-types",
+]
 
 [[package]]
 name = "walkdir"
