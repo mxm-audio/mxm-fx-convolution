@@ -363,13 +363,13 @@ pub fn all_parameters(params: &MxmFxConvolutionParams) -> [Bound<'_>; 9] {
             &params.low_cut,
             "Removes low end from the reverb; zero leaves it.",
         )
-        .law(mxm_preset::StepLaw::Hertz),
+        .law(mxm_params::StepLaw::Hertz),
         Bound::new(
             "highcut",
             &params.high_cut,
             "Removes high end from the reverb; Open leaves it.",
         )
-        .law(mxm_preset::StepLaw::Hertz),
+        .law(mxm_params::StepLaw::Hertz),
         Bound::new(
             "tone",
             &params.tone,

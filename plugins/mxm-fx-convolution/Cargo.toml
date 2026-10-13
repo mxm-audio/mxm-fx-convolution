@@ -16,6 +16,7 @@ nice-plug.workspace = true
 nice-plug-egui.workspace = true
 mxm-ui.workspace = true
 mxm-preset.workspace = true
+mxm-params.workspace = true
 mxm-tempo.workspace = true
 egui.workspace = true
 mxm-fx-convolution-dsp.workspace = true

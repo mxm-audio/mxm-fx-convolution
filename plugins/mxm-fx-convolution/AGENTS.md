@@ -131,7 +131,7 @@ existing convolver implementation or third-party response was opened or copied.
   `tree::card_floor`, never typed; model values join the keyboard cursor; still text (E1); no help
   text on a card. `every_card_passes_the_tree_checks_in_every_state` holds it. `REFERENCE` and
   `MINIMUM` are held by tests.
-- `editor/binding.rs` re-exports `mxm_preset::binding`. Size, Decay and Damping sliders submit only
+- `editor/binding.rs` re-exports `mxm_params::binding`. Size, Decay and Damping sliders submit only
   on release and emit no host gestures. Nothing is drawn to measure a card.
 - States are named in text as well as colour. The plot is energy, not a waveform; paint never
   decodes or clones embedded payload. Browse's dialog runs through `mxm_ui::offthread`. DSP reads no

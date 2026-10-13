@@ -651,7 +651,7 @@ mod tests {
         let mut preset = Preset::capture("Target", Category::Fx, &params);
         preset.params.get_mut("mix").unwrap().v = 0.1;
         let width_target =
-            mxm_preset::ErasedParam::canonical_normalised(&params.width, preset.params["width"].v);
+            mxm_params::ErasedParam::canonical_normalised(&params.width, preset.params["width"].v);
         let mut target_response = params.response.snapshot();
         target_response.preparation.reverse = true;
         preset.state = Some(serde_json::to_value(&target_response).unwrap());

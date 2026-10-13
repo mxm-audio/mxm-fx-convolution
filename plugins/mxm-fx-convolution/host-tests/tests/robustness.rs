@@ -19,8 +19,7 @@ const PLUGIN: &str = "dk.mxm.mxm-fx-convolution";
 const SKIP: &str = "skipping: run `cargo xtask bundle mxm-fx-convolution --release`";
 
 fn bundle() -> Option<PathBuf> {
-    let path = mxm_player_harness::workspace_root().join("target/bundled/mxm-fx-convolution.clap");
-    path.exists().then_some(path)
+    mxm_player_harness::host_test::plugin_bundle("mxm-fx-convolution").map(|(_, file)| file)
 }
 
 #[derive(Copy, Clone)]

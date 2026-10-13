@@ -7,6 +7,8 @@
 //! rebuilding FIR spectra cannot be sample-accurate automation.
 
 use crate::response::ResponseField;
+use mxm_params::text;
+use mxm_params::text::{StringToValue, ValueToString};
 use mxm_preset::PresetIdentity;
 use nice_plug::prelude::*;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -52,28 +54,6 @@ impl ParameterEditRevisions {
     }
 }
 
-type ValueToString = Arc<dyn Fn(f32) -> String + Send + Sync>;
-type StringToValue = Arc<dyn Fn(&str) -> Option<f32> + Send + Sync>;
-
-fn percent_to_string() -> ValueToString {
-    Arc::new(|value| format!("{:.0} %", value * 100.0))
-}
-
-fn string_to_percent() -> StringToValue {
-    Arc::new(|text| {
-        text.trim()
-            .trim_end_matches('%')
-            .trim()
-            .parse::<f32>()
-            .ok()
-            .map(|value| value / 100.0)
-    })
-}
-
-fn time_to_string() -> ValueToString {
-    Arc::new(|seconds| format!("{:.0} ms", seconds * 1_000.0))
-}
-
 fn string_to_time() -> StringToValue {
     Arc::new(|text| {
         text.trim()
@@ -106,14 +86,24 @@ fn high_cut_range() -> FloatRange {
     }
 }
 
+/// High cut's reading: whole hertz, then tenths of a kilohertz, then `Open`. **Each branch is chosen
+/// from the reading it would print**, not the raw value (D6). From 999.5 Hz up the whole-hertz text
+/// is `1000 Hz`, which parses to 1000 and reads back as `1.0 kHz`; from about 19.95 kHz up the
+/// kilohertz text is `20.0 kHz`, which parses to the Open value and reads back as `Open`. The shared
+/// text walk found the first, where this plugin's own 21-point unit-off walk could not; the code
+/// review found the second, and the walk now probes that edge too.
 fn high_cut_to_string() -> ValueToString {
     Arc::new(|value| {
         if value >= HIGH_CUT_OPEN_HZ {
-            "Open".to_owned()
-        } else if value >= 1_000.0 {
-            format!("{:.1} kHz", value / 1_000.0)
-        } else {
-            format!("{value:.0} Hz")
+            return "Open".to_owned();
+        }
+        if value.round() < 1_000.0 {
+            return format!("{value:.0} Hz");
+        }
+        let kilohertz = format!("{:.1}", value / 1_000.0);
+        match kilohertz.parse::<f32>() {
+            Ok(reading) if reading * 1_000.0 >= HIGH_CUT_OPEN_HZ => "Open".to_owned(),
+            _ => format!("{kilohertz} kHz"),
         }
     })
 }
@@ -273,8 +263,8 @@ impl Default for MxmFxConvolutionParams {
             // 30 %: the old 38 % at a wet gain of -3 dB, folded into Mix against a normalised
             // response (`preset.rs`, `folded_mix`).
             mix: FloatParam::new("Mix", 0.30, FloatRange::Linear { min: 0.0, max: 1.0 })
-                .with_value_to_string(percent_to_string())
-                .with_string_to_value(string_to_percent()),
+                .with_value_to_string(text::percent())
+                .with_string_to_value(text::parse_percent()),
             // Predelay configures a moving read tap rather than multiplying audio. The DSP owns its
             // bounded tap crossfade, so a second parameter smoother would be two transitions.
             pre_delay: FloatParam::new(
@@ -286,7 +276,7 @@ impl Default for MxmFxConvolutionParams {
                     factor: FloatRange::skew_factor(-1.4),
                 },
             )
-            .with_value_to_string(time_to_string())
+            .with_value_to_string(text::whole_milliseconds())
             .with_string_to_value(string_to_time()),
             // These five non-neutral ranges are pre-listening engineering values awaiting owner
             // approval. Their ids, meanings and exact neutral defaults are the compatibility lock.
@@ -315,15 +305,15 @@ impl Default for MxmFxConvolutionParams {
             .with_value_to_string(formatters::v2s_f32_rounded(1))
             .with_string_to_value(string_to_plain()),
             width: FloatParam::new("Width", 1.0, FloatRange::Linear { min: 0.0, max: 2.0 })
-                .with_value_to_string(percent_to_string())
-                .with_string_to_value(string_to_percent()),
+                .with_value_to_string(text::percent())
+                .with_string_to_value(text::parse_percent()),
             modulation: FloatParam::new(
                 "Modulation",
                 0.0,
                 FloatRange::Linear { min: 0.0, max: 1.0 },
             )
-            .with_value_to_string(percent_to_string())
-            .with_string_to_value(string_to_percent()),
+            .with_value_to_string(text::percent())
+            .with_string_to_value(text::parse_percent()),
             feedback: FloatParam::new(
                 "Feedback",
                 0.0,
@@ -438,6 +428,29 @@ mod tests {
                 "feedback",
                 "predelaysync"
             ]
+        );
+    }
+
+    /// **Every parameter's text survives the host's round trip**, with the unit on, across the
+    /// collection's grids and switch points (`mxm_plugin_test::text_checks`). The test below holds the
+    /// unit-off text, which this walk does not.
+    #[test]
+    fn every_parameter_text_survives_the_hosts_round_trip() {
+        // High cut reads `Open` at the top of its range: either side of where its kilohertz reading
+        // rounds to the Open value, and the Open value itself.
+        mxm_plugin_test::text_checks::every_text_round_trips(
+            &MxmFxConvolutionParams::default(),
+            &[
+                19_940.0,
+                19_949.0,
+                19_949.9,
+                19_950.0,
+                19_950.1,
+                19_951.0,
+                19_960.0,
+                19_999.0,
+                HIGH_CUT_OPEN_HZ,
+            ],
         );
     }
 

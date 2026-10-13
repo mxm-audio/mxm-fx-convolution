@@ -16,7 +16,7 @@ impl Instrument for MxmFxConvolutionParams {
         crate::CLAP_ID
     }
 
-    fn parameters(&self) -> Vec<(&'static str, &dyn mxm_preset::ErasedParam)> {
+    fn parameters(&self) -> Vec<(&'static str, &dyn mxm_params::ErasedParam)> {
         vec![
             ("mix", &self.mix),
             ("predelay", &self.pre_delay),
@@ -111,28 +111,22 @@ pub(crate) mod tests {
     use super::*;
     use mxm_preset::{DeferredContent, DeferredPresetTransaction, DeferredStatus, Origin};
     use nice_plug::params::InternalParamMut;
-    use nice_plug::params::internals::ParamPtr;
-    use nice_plug::prelude::{Param, ParamSetter, PluginApi, PluginState};
 
-    struct NoHost;
+    use nice_plug::prelude::{Param, ParamSetter};
 
-    impl nice_plug::context::gui::GuiContextInner for NoHost {
-        // A test double has no host to ask for a restart (nice-plug 0.4).
-        fn request_restart(&self) {}
-        fn plugin_api(&self) -> PluginApi {
-            PluginApi::Clap
-        }
-        unsafe fn raw_begin_set_parameter(&self, _param: ParamPtr) {}
-        unsafe fn raw_set_parameter_normalized(&self, _param: ParamPtr, _normalized: f32) {}
-        unsafe fn raw_end_set_parameter(&self, _param: ParamPtr) {}
-        fn get_state(&self) -> PluginState {
-            PluginState {
-                version: String::new(),
-                params: Default::default(),
-                fields: Default::default(),
-            }
-        }
-        fn set_state(&self, _state: PluginState) {}
+    use mxm_plugin_test::NoHost;
+
+    /// **Every stored `text` is this plugin's own formatting of the `v` beside it**
+    /// (`mxm_preset::stale_factory_texts`).
+    #[test]
+    fn every_factory_text_is_this_plugins_formatting_of_its_value() {
+        let stale = mxm_preset::stale_factory_texts(&MxmFxConvolutionParams::default());
+        assert!(
+            stale.is_empty(),
+            "{} stale texts — regenerate the files:\n{}",
+            stale.len(),
+            stale.join("\n")
+        );
     }
 
     #[test]

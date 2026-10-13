@@ -27,9 +27,7 @@ const SKIP: &str =
     "skipping: run `cargo xtask bundle mxm-fx-convolution --release` and bundle mxm-mono-01";
 
 fn bundle() -> Option<(PathBuf, PathBuf)> {
-    let dir = app_harness::any_bundled_dir()?;
-    let file = dir.join("mxm-fx-convolution.clap");
-    file.exists().then_some((dir, file))
+    mxm_player_harness::host_test::plugin_bundle("mxm-fx-convolution")
 }
 
 #[test]

@@ -360,7 +360,7 @@ developer CC channel.
 ### Knobs, the binding and the model sliders
 
 All ten host parameters use shared knobs, exact entry, tooltips, keyboard navigation and one
-balanced gesture-binding path. **`editor/binding.rs` re-exports `mxm_preset::binding`**, the
+balanced gesture-binding path. **`editor/binding.rs` re-exports `mxm_params::binding`**, the
 collection's one binding, since 2026-09-24; it was a reduced copy (`new` and `knob` only) until
 2026-09-23. The one behaviour that changed when it became the full one was the reset: a
 double-click on a knob a host is modulating keeps its value, as in every other plugin, where the
