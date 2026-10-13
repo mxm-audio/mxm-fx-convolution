@@ -28,9 +28,10 @@ impl ResponseRejection {
 
 #[derive(Debug)]
 pub struct Telemetry {
-    peak: AtomicU32,
+    /// The output level and its clip latch: the collection's one meter policy
+    /// (`mxm_telemetry::PeakMeter`).
+    pub meter: mxm_telemetry::PeakMeter,
     tail_samples: AtomicU64,
-    clipped: AtomicBool,
     numeric_fault: AtomicBool,
     response_rejection: AtomicU32,
     rejected_rate: AtomicU32,
@@ -47,9 +48,8 @@ impl Default for Telemetry {
 impl Telemetry {
     pub const fn new() -> Self {
         Self {
-            peak: AtomicU32::new(0),
+            meter: mxm_telemetry::PeakMeter::new(),
             tail_samples: AtomicU64::new(0),
-            clipped: AtomicBool::new(false),
             numeric_fault: AtomicBool::new(false),
             response_rejection: AtomicU32::new(0),
             rejected_rate: AtomicU32::new(0),
@@ -64,42 +64,18 @@ impl Telemetry {
     /// Publish once per host callback. Peaks are max-combined so a skipped editor frame cannot hide
     /// a transient; clip and numeric-fault reports latch until explicitly acknowledged.
     pub fn publish(&self, peak: f32, tail_samples: u64, clipped: bool, numeric_fault: bool) {
-        let peak = if peak.is_finite() { peak.abs() } else { 0.0 };
-        let mut current = self.peak.load(Ordering::Relaxed);
-        while f32::from_bits(current) < peak {
-            match self.peak.compare_exchange_weak(
-                current,
-                peak.to_bits(),
-                Ordering::Relaxed,
-                Ordering::Relaxed,
-            ) {
-                Ok(_) => break,
-                Err(seen) => current = seen,
-            }
-        }
+        self.meter.publish(peak);
         self.tail_samples.store(tail_samples, Ordering::Relaxed);
-        if clipped || peak > 1.0 {
-            self.clipped.store(true, Ordering::Relaxed);
+        if clipped {
+            self.meter.latch_clip();
         }
         if numeric_fault {
             self.numeric_fault.store(true, Ordering::Relaxed);
         }
     }
 
-    pub fn take_peak(&self) -> f32 {
-        f32::from_bits(self.peak.swap(0, Ordering::Relaxed))
-    }
-
     pub fn tail_samples(&self) -> u64 {
         self.tail_samples.load(Ordering::Relaxed)
-    }
-
-    pub fn clipped(&self) -> bool {
-        self.clipped.load(Ordering::Relaxed)
-    }
-
-    pub fn clear_clip(&self) {
-        self.clipped.store(false, Ordering::Relaxed);
     }
 
     pub fn numeric_fault(&self) -> bool {
@@ -139,26 +115,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn peak_is_max_combined_and_reset_on_read() {
-        let telemetry = Telemetry::new();
-        telemetry.publish(0.4, 9, false, false);
-        telemetry.publish(0.8, 7, false, false);
-        telemetry.publish(0.2, 5, false, false);
-        assert_eq!(telemetry.take_peak(), 0.8);
-        assert_eq!(telemetry.take_peak(), 0.0);
-        assert_eq!(telemetry.tail_samples(), 5);
-    }
-
-    #[test]
     fn clip_and_fault_latch_until_acknowledged() {
         let telemetry = Telemetry::new();
         telemetry.publish(1.2, 0, true, true);
         telemetry.publish(0.1, 0, false, false);
-        assert!(telemetry.clipped());
+        assert!(telemetry.meter.clipped());
         assert!(telemetry.numeric_fault());
-        telemetry.clear_clip();
+        telemetry.meter.clear_clip();
         telemetry.clear_numeric_fault();
-        assert!(!telemetry.clipped());
+        assert!(!telemetry.meter.clipped());
         assert!(!telemetry.numeric_fault());
     }
 

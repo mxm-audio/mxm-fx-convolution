@@ -285,13 +285,13 @@ fn panel_with_actions(
     // Destructive telemetry is sampled exactly once, before the paging renderer may perform any
     // hidden measurement passes. Measurement receives this inert copy and cannot consume audio data.
     let meters = sections::MeterView {
-        peak: telemetry.take_peak(),
+        peak: telemetry.meter.take(),
         tail_samples: telemetry.tail_samples(),
         numeric_fault: telemetry.numeric_fault(),
         response_rejection: telemetry.response_rejection(),
         tempo: telemetry.tempo.get(),
     };
-    let clipped = telemetry.clipped();
+    let clipped = telemetry.meter.clipped();
     let busy = presets.holds_the_keyboard() || text_entry.values().any(Option::is_some);
     mxm_ui::paging::editor::hold(ui.ctx(), busy);
     mxm_ui::navigation::paged(ui.ctx(), nav, busy);
@@ -308,7 +308,7 @@ fn panel_with_actions(
         },
         |ui| {
             if mxm_ui::shell::level_meter(ui, &tokens, meters.peak, clipped) {
-                telemetry.clear_clip();
+                telemetry.meter.clear_clip();
             }
             mxm_ui::shell::zoom_control(ui);
             mxm_ui::shell::editor_theme_control(ui);
