@@ -4,7 +4,8 @@ Parent: [`../../AGENTS.md`](../../AGENTS.md)
 
 # Purpose
 
-Framework-free, zero-dependency DSP for the original `mxm-fx-convolution` effect: explicit response
+Framework-free DSP for the original `mxm-fx-convolution` effect, depending only on the dependency-free
+`mxm-dsp` (the finite guard and the delay line): explicit response
 matrix routing, a zero-delay two-tier partitioned FIR, linear pre-delay, bounded response replacement,
 the wet post-convolution EQ/modulated-delay/Width path, Mix, Revision 7's bounded
 raw-response Feedback loop and finite/infinite activity, and deterministic reset.

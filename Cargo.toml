@@ -28,6 +28,7 @@ repository = "https://github.com/mxm-audio/mxm-fx-convolution"
 egui = "=0.36.1"
 mxm-audio-file = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-audio-file-decode = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
+mxm-dsp = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-fx-convolution-dsp = { path = "crates/mxm-fx-convolution-dsp" }
 mxm-player = { git = "https://github.com/mxm-audio/mxm-player", branch = "main" }
 mxm-player-harness = { git = "https://github.com/mxm-audio/mxm-player", branch = "main" }

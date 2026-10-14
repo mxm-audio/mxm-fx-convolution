@@ -6,6 +6,7 @@
 
 use crate::control::{HIGH_CUT_BYPASS_HZ, WetPostControlFrame, WetPostTailConfig};
 use crate::fft::flush;
+use mxm_dsp::delay::AgeLine;
 
 /// Pre-listening provisional rate, intended as slow room motion rather than vibrato. This value
 /// has not been selected by listening and awaits owner approval.
@@ -125,9 +126,9 @@ impl WetEq {
 }
 
 struct ModulatedDelay {
-    buffers: [Vec<f32>; 2],
-    write: usize,
-    valid_samples: usize,
+    /// One `mxm_dsp::delay::AgeLine` a channel, `max_delay_samples + 1` long. The current input is
+    /// pushed before the read, so this line's age `a` (0 = the current input) is the line's `a + 1`.
+    lines: [AgeLine; 2],
     phase: f32,
     phase_step: f32,
     sample_rate: f32,
@@ -147,18 +148,9 @@ impl ModulatedDelay {
         // Match the audio/control f32 time-to-sample rounding law after the wide overflow guard.
         let max_delay_samples = (MODULATION_MAX_DELAY_S * sample_rate).ceil() as usize + 2;
         let len = max_delay_samples + 1;
-        let allocate = || {
-            let mut values = Vec::new();
-            values
-                .try_reserve_exact(len)
-                .map_err(|_| WetPostPathError::Allocation)?;
-            values.resize(len, 0.0);
-            Ok(values)
-        };
+        let allocate = || AgeLine::try_new(len).map_err(|_| WetPostPathError::Allocation);
         Ok(Self {
-            buffers: [allocate()?, allocate()?],
-            write: 0,
-            valid_samples: 0,
+            lines: [allocate()?, allocate()?],
             phase: 0.0,
             phase_step,
             sample_rate,
@@ -168,11 +160,10 @@ impl ModulatedDelay {
 
     #[inline]
     fn process(&mut self, input: [f32; 2], amount: f32) -> [f32; 2] {
-        self.buffers[0][self.write] = flush(input[0]);
-        self.buffers[1][self.write] = flush(input[1]);
+        self.lines[0].push(flush(input[0]));
+        self.lines[1].push(flush(input[1]));
         if amount == 0.0 {
             self.phase = 0.0;
-            self.advance_write();
             return input;
         }
 
@@ -187,7 +178,6 @@ impl ModulatedDelay {
         }
         self.phase += self.phase_step;
         self.phase -= self.phase.floor();
-        self.advance_write();
         output.map(flush)
     }
 
@@ -197,30 +187,13 @@ impl ModulatedDelay {
         let younger = delay.floor() as usize;
         let older = (younger + 1).min(self.max_delay_samples);
         let fraction = delay - younger as f32;
-        let sample = |age: usize| {
-            if age <= self.valid_samples {
-                let index =
-                    (self.write + self.buffers[channel].len() - age) % self.buffers[channel].len();
-                self.buffers[channel][index]
-            } else {
-                0.0
-            }
-        };
+        let sample = |age: usize| self.lines[channel].read(age + 1);
         sample(younger) * (1.0 - fraction) + sample(older) * fraction
     }
 
-    #[inline]
-    fn advance_write(&mut self) {
-        self.write = (self.write + 1) % self.buffers[0].len();
-        self.valid_samples = self
-            .valid_samples
-            .saturating_add(1)
-            .min(self.buffers[0].len());
-    }
-
     fn reset(&mut self) {
-        self.write = 0;
-        self.valid_samples = 0;
+        self.lines[0].clear();
+        self.lines[1].clear();
         self.phase = 0.0;
     }
 }
@@ -434,10 +407,9 @@ mod tests {
         }
         assert!(
             path.modulation
-                .buffers
+                .lines
                 .iter()
-                .flatten()
-                .all(|value| normal_or_zero(*value))
+                .all(|line| { (1..=line.capacity()).all(|age| normal_or_zero(line.read(age))) })
         );
     }
 

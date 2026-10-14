@@ -141,7 +141,7 @@ locally (*Verification*).
 
 | Crate | MSRV | Why |
 |---|---|---|
-| `crates/mxm-fx-convolution-dsp` | **1.87** | Likewise — no runtime dependencies (its demo dev-depends on `mxm-audio-file`); explicit response-matrix routing, the zero-delay partitioned FIR, bounded response replacement and exact finite idle |
+| `crates/mxm-fx-convolution-dsp` | **1.87** | Likewise — one runtime dependency, the dependency-free `mxm-dsp` (its demo dev-depends on `mxm-audio-file`); explicit response-matrix routing, the zero-delay partitioned FIR, bounded response replacement and exact finite idle |
 | `plugins/mxm-fx-convolution` | **1.95** | Its dynamically paged editor pulls in egui; depends on `mxm-fx-convolution-dsp`, which stays at 1.87 |
 
 ## Licensing

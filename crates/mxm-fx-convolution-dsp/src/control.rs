@@ -9,6 +9,8 @@
 //! post-convolution controls live in [`WetPostControlState`], so extending the engine does not
 //! change the existing response snapshot or constructor contract.
 
+use mxm_dsp::guard::finite_or;
+
 /// The quantities currently known to be live DSP controls, in DSP-native units.
 ///
 /// This is not a permanent plugin parameter inventory. The C4 listening gate owns parameter ids,
@@ -83,14 +85,14 @@ impl WetEqControls {
         Self {
             low_cut_hz: finite_nonnegative(self.low_cut_hz, fallback.low_cut_hz),
             high_cut_hz: {
-                let value = finite(self.high_cut_hz, fallback.high_cut_hz);
+                let value = finite_or(self.high_cut_hz, fallback.high_cut_hz);
                 if value < 0.0 {
                     HIGH_CUT_BYPASS_HZ
                 } else {
                     value
                 }
             },
-            tone_db: finite(self.tone_db, fallback.tone_db),
+            tone_db: finite_or(self.tone_db, fallback.tone_db),
         }
     }
 }
@@ -123,7 +125,7 @@ impl WetPostControls {
     fn sanitised(self, fallback: Self) -> Self {
         Self {
             wet_eq: self.wet_eq.sanitised(fallback.wet_eq),
-            modulation: finite(self.modulation, fallback.modulation).clamp(0.0, 1.0),
+            modulation: finite_or(self.modulation, fallback.modulation).clamp(0.0, 1.0),
             width: finite_nonnegative(self.width, fallback.width),
         }
     }
@@ -597,13 +599,8 @@ impl MixGate {
 }
 
 #[inline]
-fn finite(value: f32, fallback: f32) -> f32 {
-    if value.is_finite() { value } else { fallback }
-}
-
-#[inline]
 fn finite_nonnegative(value: f32, fallback: f32) -> f32 {
-    finite(value, fallback).max(0.0)
+    finite_or(value, fallback).max(0.0)
 }
 
 #[inline]

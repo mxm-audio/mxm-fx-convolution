@@ -4,6 +4,8 @@
 //! state, and every supported host-layout/response row follows the matrix in
 //! `plans/plan-mxm-fx-convolution.md` §1.
 
+use mxm_dsp::guard::finite_or;
+
 /// One host input frame. The effect always produces stereo output.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum InputFrame {
@@ -75,7 +77,7 @@ pub fn wet_excitation(input: InputFrame, response: ResponseInterpretation) -> St
         (InputFrame::Stereo([left, right]), ResponseInterpretation::Mono) => [left, right],
         (InputFrame::Stereo([left, right]), ResponseInterpretation::MonoToStereo) => {
             let folded = (left + right) * core::f32::consts::FRAC_1_SQRT_2;
-            [finite_or_zero(folded), finite_or_zero(folded)]
+            [finite_or(folded, 0.0), finite_or(folded, 0.0)]
         }
         (InputFrame::Stereo([left, right]), ResponseInterpretation::DiagonalStereo) => {
             [left, right]
@@ -112,16 +114,11 @@ pub(crate) fn feedback_return(wet: StereoFrame, response: ResponseInterpretation
 #[inline]
 fn finite_input(input: InputFrame) -> InputFrame {
     match input {
-        InputFrame::Mono(x) => InputFrame::Mono(finite_or_zero(x)),
+        InputFrame::Mono(x) => InputFrame::Mono(finite_or(x, 0.0)),
         InputFrame::Stereo([left, right]) => {
-            InputFrame::Stereo([finite_or_zero(left), finite_or_zero(right)])
+            InputFrame::Stereo([finite_or(left, 0.0), finite_or(right, 0.0)])
         }
     }
-}
-
-#[inline]
-fn finite_or_zero(value: f32) -> f32 {
-    if value.is_finite() { value } else { 0.0 }
 }
 
 #[cfg(test)]

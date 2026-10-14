@@ -10,6 +10,7 @@ authors.workspace = true
 repository.workspace = true
 
 [dependencies]
+mxm-dsp.workspace = true
 
 [dev-dependencies]
 # The tests' and the demo's seeded responses.
