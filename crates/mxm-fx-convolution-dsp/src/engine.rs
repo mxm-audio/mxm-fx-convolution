@@ -1190,11 +1190,10 @@ mod tests {
         // an empty room rather than a decaying one. The defect this guards is response-shape
         // dependent, so the fixture has to be the shape an owner actually loads.
         fn response() -> Vec<f32> {
-            let mut state = 0x1234_5678u32;
+            let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
             (0..100_000)
                 .map(|index| {
-                    state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                    let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                    let noise = rng.bipolar_f32();
                     noise * (-(index as f32) / 30_000.0).exp()
                 })
                 .collect()
@@ -1252,11 +1251,10 @@ mod tests {
     #[test]
     fn real_length_response_feedback_changes_the_tail() {
         fn response(len: usize, decay_samples: f32) -> Vec<f32> {
-            let mut state = 0x1234_5678u32;
+            let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
             (0..len)
                 .map(|index| {
-                    state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                    let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                    let noise = rng.bipolar_f32();
                     noise * (-(index as f32) / decay_samples).exp()
                 })
                 .collect()
@@ -1316,11 +1314,10 @@ mod tests {
     #[ignore = "tuning instrument, not a regression test: asserts nothing, run explicitly"]
     fn feedback_threshold_sweep_on_a_room_length_response() {
         fn response(len: usize, decay_samples: f32) -> Vec<f32> {
-            let mut state = 0x1234_5678u32;
+            let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
             (0..len)
                 .map(|index| {
-                    state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                    let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                    let noise = rng.bipolar_f32();
                     noise * (-(index as f32) / decay_samples).exp()
                 })
                 .collect()
@@ -1395,11 +1392,10 @@ mod tests {
     #[ignore = "tuning instrument, not a regression test: recompile per scale and run explicitly"]
     fn oscillation_ceiling_against_the_input_for_the_current_scale() {
         fn response(len: usize, decay_samples: f32) -> Vec<f32> {
-            let mut state = 0x1234_5678u32;
+            let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
             (0..len)
                 .map(|index| {
-                    state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                    let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                    let noise = rng.bipolar_f32();
                     noise * (-(index as f32) / decay_samples).exp()
                 })
                 .collect()
@@ -1458,11 +1454,10 @@ mod tests {
     #[test]
     fn feedback_through_the_ramped_control_path_matches_the_immediate_path() {
         fn response(len: usize, decay_samples: f32) -> Vec<f32> {
-            let mut state = 0x1234_5678u32;
+            let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
             (0..len)
                 .map(|index| {
-                    state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                    let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                    let noise = rng.bipolar_f32();
                     noise * (-(index as f32) / decay_samples).exp()
                 })
                 .collect()
@@ -1553,11 +1548,10 @@ mod tests {
         // fixture could only sustain by asserting something unreachable. The control's edge is
         // calibrated for the response shape an owner loads, so the proof uses that shape.
         let response: Vec<f32> = {
-            let mut state = 0x1234_5678u32;
+            let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
             (0..100_000)
                 .map(|index| {
-                    state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                    let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                    let noise = rng.bipolar_f32();
                     noise * (-(index as f32) / 30_000.0).exp()
                 })
                 .collect()

@@ -12,6 +12,8 @@ repository.workspace = true
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
+# The starter room's late noise.
+mxm-rng.workspace = true
 nice-plug.workspace = true
 nice-plug-egui.workspace = true
 mxm-ui.workspace = true

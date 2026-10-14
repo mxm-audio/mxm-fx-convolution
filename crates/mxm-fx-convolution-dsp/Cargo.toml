@@ -12,6 +12,8 @@ repository.workspace = true
 [dependencies]
 
 [dev-dependencies]
+# The tests' and the demo's seeded responses.
+mxm-rng.workspace = true
 # The listening demo writes through the collection's encoder. A test-only edge, so the shipped
 # graph keeps no dependencies at all.
 mxm-audio-file.workspace = true

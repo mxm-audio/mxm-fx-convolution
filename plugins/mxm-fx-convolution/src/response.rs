@@ -10,6 +10,7 @@ use base64::engine::general_purpose::STANDARD as BASE64;
 use mxm_fx_convolution_dsp::{
     AudioEngine, LiveControls, PrepareError, PreparedResponse, ResponseInterpretation,
 };
+use mxm_rng::{Xorshift32, map};
 use nice_plug::context::gui::GuiContext;
 use nice_plug::params::persist::{PersistentField, serialize_field};
 use serde::{Deserialize, Serialize};
@@ -1549,12 +1550,9 @@ fn starter_state() -> ResponseState {
             right[index] += gain_right;
         }
     }
-    let mut random = 0x6d2b_79f5u32;
+    let mut random = Xorshift32::from_state(0x6d2b_79f5);
     for index in (STARTER_RATE as usize / 2_000)..frames {
-        random ^= random << 13;
-        random ^= random >> 17;
-        random ^= random << 5;
-        let noise = (random as f32 / u32::MAX as f32) * 2.0 - 1.0;
+        let noise = map::unit_f32_word(random.next_u32()) * 2.0 - 1.0;
         let seconds = index as f32 / STARTER_RATE as f32;
         let envelope = (-seconds / 0.0034).exp() * 0.014;
         left[index] += noise * envelope;
@@ -1809,13 +1807,10 @@ mod tests {
         let rate = 48_000u32;
         let room = |seconds: f32, t60: f32| {
             let frames = (rate as f32 * seconds) as usize;
-            let mut random = 0x2545_f491u32;
+            let mut random = Xorshift32::from_state(0x2545_f491);
             let samples: Vec<f32> = (0..frames)
                 .map(|index| {
-                    random ^= random << 13;
-                    random ^= random >> 17;
-                    random ^= random << 5;
-                    let noise = (random as f32 / u32::MAX as f32) * 2.0 - 1.0;
+                    let noise = map::unit_f32_word(random.next_u32()) * 2.0 - 1.0;
                     noise * 10f32.powf(-3.0 * index as f32 / rate as f32 / t60)
                 })
                 .collect();

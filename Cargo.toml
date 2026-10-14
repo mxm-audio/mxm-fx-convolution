@@ -34,6 +34,7 @@ mxm-player-harness = { git = "https://github.com/mxm-audio/mxm-player", branch =
 mxm-plugin-test = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-preset = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-params = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
+mxm-rng = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-telemetry = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-tempo = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }
 mxm-ui = { git = "https://github.com/mxm-audio/mxm-kit", branch = "main" }

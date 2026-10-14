@@ -608,11 +608,10 @@ fn uncertified_feedback_sustains_then_zero_drains_and_reset_is_deterministic() {
     // the response shape an owner loads, so the proof uses that shape and measures sustain by
     // energy rather than by one sample 256 frames into a 100,000-sample impulse.
     let response: Vec<f32> = {
-        let mut state = 0x1234_5678u32;
+        let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
         (0..100_000)
             .map(|index| {
-                state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                let noise = rng.bipolar_f32();
                 noise * (-(index as f32) / 30_000.0).exp()
             })
             .collect()

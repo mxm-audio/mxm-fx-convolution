@@ -526,11 +526,10 @@ fn feedback_across_response_length_and_control_route() {
     };
 
     fn decaying(len: usize, decay: f32) -> Vec<f32> {
-        let mut state = 0x1234_5678u32;
+        let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
         (0..len)
             .map(|index| {
-                state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                let noise = rng.bipolar_f32();
                 noise * (-(index as f32) / decay).exp()
             })
             .collect()
@@ -757,11 +756,10 @@ fn configure_one_tap_feedback(
     // room-scale branch remains for stop/reset and audibility proofs, where a realistic long tail
     // gives the loop time and spectral density to establish visibly.
     let coefficients: Vec<f32> = {
-        let mut state = 0x1234_5678u32;
+        let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
         (0..if room_scale { 100_000 } else { 1 })
             .map(|index| {
-                state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                let noise = rng.bipolar_f32();
                 if room_scale {
                     noise * (-(index as f32) / 30_000.0).exp()
                 } else {
@@ -1846,11 +1844,10 @@ fn feedback_must_not_touch_the_dry_path() {
         panic!("{SKIP}");
     };
     let response: Vec<f32> = {
-        let mut state = 0x1234_5678u32;
+        let mut rng = mxm_rng::Lcg32::new(0x1234_5678);
         (0..100_000)
             .map(|index| {
-                state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-                let noise = (state >> 8) as f32 / 8_388_608.0 - 1.0;
+                let noise = rng.bipolar_f32();
                 noise * (-(index as f32) / 30_000.0).exp()
             })
             .collect()

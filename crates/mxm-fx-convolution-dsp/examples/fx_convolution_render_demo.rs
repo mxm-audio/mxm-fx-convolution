@@ -23,10 +23,9 @@ fn generated_response(seconds: f32, seed: u32) -> Vec<f32> {
             response[at] += gain;
         }
     }
-    let mut state = seed;
+    let mut rng = mxm_rng::Lcg32::new(seed);
     for (index, sample) in response.iter_mut().enumerate().skip(1) {
-        state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
-        let noise = ((state >> 8) as f32 / 16_777_215.0) * 2.0 - 1.0;
+        let noise = mxm_rng::map::unit_f32_closed(rng.next_u32()) * 2.0 - 1.0;
         let time = index as f32 / RATE as f32;
         *sample += noise * (-time * 4.8).exp() * 0.018;
     }
