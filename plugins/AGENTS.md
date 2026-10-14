@@ -79,7 +79,7 @@ machine only lives in its own `AGENTS.md` below.
   card and the app bar wide; it opens at the quarter-4K budget, hugged. Test what the editor paints.
 - **Keyboard cursor** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#the-keyboard-cursor-runs-in-every-editor-and-each-one-owes-it-three-things)):
   `panel` takes a `navigation::State`, calls `navigation::paged` before the cards, and wraps each
-  control in `navigation::at`; `build()` calls `navigation::use_shared_keymap`, so the keys are
+  control in `navigation::at`; `build()` calls `shell::install`, which reads the shared keymap, so the keys are
   the keymap in use that newDAWn and every MXM editor share; prove it with
   `keyboard_checks::the_cursor_reaches_and_operates`.
   **F1 shows the keys**, a sheet built from the keymap in use, and `Escape` closes it: the cursor
