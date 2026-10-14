@@ -555,7 +555,7 @@ checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 [[package]]
 name = "baseview"
 version = "0.3.6"
-source = "git+https://github.com/mxm-audio/baseview?branch=main#0b04fdd2520ffcffe2f02ee47907394e23ff384d"
+source = "git+https://github.com/mxm-audio/baseview?branch=main#a0d8979d63f36945e026ae6837b1602d85e22713"
 dependencies = [
  "block2 0.6.2",
  "bytemuck",
@@ -2670,7 +2670,7 @@ dependencies = [
 [[package]]
 name = "mxm-player"
 version = "0.1.0"
-source = "git+https://github.com/mxm-audio/mxm-player?branch=main#5308352d7ddd0ce81348e3727aa212cd969fa78c"
+source = "git+https://github.com/mxm-audio/mxm-player?branch=main#cd3eae3534f5272c16ca2644ee35f597eb96896b"
 dependencies = [
  "clack-extensions",
  "clack-host",
@@ -2697,7 +2697,7 @@ dependencies = [
 [[package]]
 name = "mxm-player-harness"
 version = "0.2.1"
-source = "git+https://github.com/mxm-audio/mxm-player?branch=main#5308352d7ddd0ce81348e3727aa212cd969fa78c"
+source = "git+https://github.com/mxm-audio/mxm-player?branch=main#cd3eae3534f5272c16ca2644ee35f597eb96896b"
 dependencies = [
  "clack-extensions",
  "clack-host",
