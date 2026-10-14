@@ -18,7 +18,6 @@ use mxm_ui::space::SPACE_5;
 use mxm_ui::theme::Tokens;
 use nice_plug::context::gui::GuiContext;
 use nice_plug::prelude::*;
-use nice_plug_egui::{EguiEditorState, NiceEguiApp, create_egui_editor};
 
 use crate::deferred::DeferredPresetController;
 use crate::params::MxmFxConvolutionParams;
@@ -32,7 +31,7 @@ pub(crate) const RESPONSE_EDIT: &str = "response change";
 const REFERENCE: (u32, u32) = (951, 555);
 const MINIMUM: (u32, u32) = (416, 320);
 
-pub type MxmFxConvolutionEditor = nice_plug_egui::EguiEditor<MxmFxConvolutionApp>;
+pub type MxmFxConvolutionEditor = mxm_editor::Editor<MxmFxConvolutionApp>;
 pub use mxm_preset::PresetUi;
 
 pub fn create(
@@ -41,23 +40,10 @@ pub fn create(
     deferred_presets: Arc<DeferredPresetController>,
     executor: AsyncExecutor<MxmFxConvolution>,
 ) -> Option<MxmFxConvolutionEditor> {
-    let state = EguiEditorState::from_size(
-        nice_plug::editor::dpi::LogicalSize::new(REFERENCE.0, REFERENCE.1),
-        1.0,
-    );
-    create_egui_editor(
-        state,
-        nice_plug_egui::RepaintNotifier::new(),
-        nice_plug_egui::EguiNiceSettings {
-            title: crate::NAME.to_owned(),
-            resize_hint: ResizeHint {
-                size_constraints: nice_plug::editor::SizeConstraints::min_logical_size(
-                    nice_plug::editor::dpi::LogicalSize::new(MINIMUM.0 as f32, MINIMUM.1 as f32),
-                ),
-                ..ResizeHint::RESIZABLE
-            },
-            ..Default::default()
-        },
+    mxm_editor::create(
+        crate::NAME,
+        REFERENCE,
+        MINIMUM,
         MxmFxConvolutionApp::new(params, telemetry, deferred_presets, executor),
     )
 }
@@ -67,7 +53,6 @@ pub struct MxmFxConvolutionApp {
     telemetry: Arc<Telemetry>,
     deferred_presets: Arc<DeferredPresetController>,
     executor: AsyncExecutor<MxmFxConvolution>,
-    gui_context: Option<GuiContext>,
     display_revision: u64,
     response_view: sections::ResponseView,
     text_entry: HashMap<&'static str, Option<String>>,
@@ -97,7 +82,6 @@ impl MxmFxConvolutionApp {
             telemetry,
             deferred_presets,
             executor,
-            gui_context: None,
             display_revision,
             response_view,
             text_entry: HashMap::new(),
@@ -108,14 +92,8 @@ impl MxmFxConvolutionApp {
     }
 }
 
-impl NiceEguiApp for MxmFxConvolutionApp {
-    fn build(
-        &mut self,
-        context: egui::Context,
-        gui_context: GuiContext,
-        _frame: &mut nice_plug_egui::Frame,
-    ) -> Result<(), nice_plug_egui::baseview::HandlerError> {
-        mxm_ui::shell::install(&context);
+impl mxm_editor::Panel for MxmFxConvolutionApp {
+    fn opened(&mut self, _context: &egui::Context, gui_context: &GuiContext) {
         self.params
             .response
             .connect_context(Some(gui_context.clone()));
@@ -125,19 +103,14 @@ impl NiceEguiApp for MxmFxConvolutionApp {
         {
             self.executor.execute_gui(EditorTask::Wake);
         }
-        self.gui_context = Some(gui_context);
         // Adopt a background completion that arrived while no editor existed. Ready is consumed
         // exactly once because a successful commit changes it to Idle synchronously.
         commit_ready(&self.params);
         self.display_revision = self.params.response.revision();
         self.response_view = sections::ResponseView::read(&self.params);
-        Ok(())
     }
 
-    fn ui(&mut self, ui: &mut Ui, _frame: &mut nice_plug_egui::Frame) {
-        let Some(context) = self.gui_context.clone() else {
-            return;
-        };
+    fn ui(&mut self, ui: &mut Ui, context: &GuiContext) {
         // A published preset is acknowledged by the next process callback, so wake the audio
         // side for it: a host may have put an idle effect to sleep (`DeferredPresetController::service`).
         if self
@@ -207,7 +180,7 @@ impl NiceEguiApp for MxmFxConvolutionApp {
         );
     }
 
-    fn editor_closed(&mut self) {
+    fn closed(&mut self, _host: &GuiContext) {
         self.deferred_presets.cancel_unpublished(&self.params);
         // A response prepared just before close is committed whole rather than stranded. The old
         // response remains selected if preparation failed.
@@ -217,7 +190,6 @@ impl NiceEguiApp for MxmFxConvolutionApp {
             self.params.response.fail(error);
         }
         self.params.response.connect_context(None);
-        self.gui_context = None;
     }
 }
 
