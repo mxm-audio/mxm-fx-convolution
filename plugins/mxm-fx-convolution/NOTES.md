@@ -232,6 +232,16 @@ slider work submits once at release, and each fully prepared candidate carries i
 complete engine and bounded waveform display into the wrapper transaction. Decode/allocation/deadline
 failure keeps the old response active and displays the error.
 
+## Its own WAV reader
+
+The response is read by `hound` in `response.rs`, not by the collection's decoder
+(`mxm-audio-file-decode`), and the owner decided so (the architecture audit's O5, 2026-10-14: "keep both readers"). Moving it
+would not read every WAV the same: `hound` scales a `WAVE_FORMAT_EXTENSIBLE` integer file by its
+valid bits where symphonia scales by the container's width, and it reads 24-bit samples padded into
+four bytes that symphonia takes as packed — rare layouts, but a response that changes level or
+breaks when the reader changes is a defect, and widening the formats was not worth that. The plan
+and its review are `ops/plans/plan-audio-readers.md` in the workspace.
+
 ## The collection's impulse responses
 
 - **Installed per user, outside the plugin** (owner, 2026-09-16): `mxm/impulses/` under the

@@ -19,7 +19,8 @@ existing convolver implementation or third-party response was opened or copied.
 
 - `src/lib.rs` — CLAP export, layouts, activation, bounded processing, activity, state preflight.
 - `src/params.rs` — the host ids and the generated-response default patch.
-- `src/response.rs` — canonical response state, the starter, WAV decoding, reversible modelling,
+- `src/response.rs` — canonical response state, the starter, WAV decoding (its own `hound` reader, kept:
+  [NOTES.md § Its own WAV reader](NOTES.md#its-own-wav-reader)), reversible modelling,
   resampling, deadline validation, staging of complete prepared engines, display cache, capture.
 - `src/telemetry.rs` — lock-free telemetry; `src/deferred.rs` — the deferred-preset owner;
   `src/impulses.rs` — the impulses folder; `src/editor.rs`, `src/editor/` — the editor;
