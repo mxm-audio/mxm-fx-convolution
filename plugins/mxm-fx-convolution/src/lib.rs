@@ -780,7 +780,36 @@ impl ClapPlugin for MxmFxConvolution {
     ];
 }
 
+impl Vst3Plugin for MxmFxConvolution {
+    /// Permanent, as `CLAP_ID` is: the CLAP id's hash written out, held to it by
+    /// `identity::the_vst3_class_id_is_the_clap_ids_hash`.
+    const VST3_CLASS_ID: [u8; 16] = [
+        0x1c, 0xb7, 0xe5, 0x0d, 0xe0, 0x7f, 0xd6, 0x60, 0x81, 0x6c, 0x54, 0xea, 0x48, 0x1f, 0xe9,
+        0x5e,
+    ];
+    const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] =
+        &[Vst3SubCategory::Fx, Vst3SubCategory::Reverb];
+}
+
 nice_export_clap!(MxmFxConvolution);
+nice_export_vst3!(MxmFxConvolution);
+
+/// The plugin's identity in each format.
+#[cfg(test)]
+mod identity {
+    use super::MxmFxConvolution;
+    use mxm_plugin_test::formats;
+
+    #[test]
+    fn the_vst3_class_id_is_the_clap_ids_hash() {
+        formats::the_vst3_class_id_is_the_clap_ids_hash::<MxmFxConvolution>();
+    }
+
+    #[test]
+    fn the_vst3_categories_follow_the_clap_features() {
+        formats::the_vst3_categories_follow_the_clap_features::<MxmFxConvolution>();
+    }
+}
 
 fn finite_sample(sample: f32, fault: &mut bool) -> f32 {
     *fault |= !sample.is_finite();

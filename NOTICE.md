@@ -10,6 +10,8 @@ are not covered by that licence; see `TRADEMARKS.md`.
 - nice-plug ([mxm-audio/nice-plug](https://github.com/mxm-audio/nice-plug)) — ISC, Copyright (c)
   2022-2024 Robbert van der Helm.
 - egui, egui-baseview and their dependencies — MIT or Apache-2.0.
+- The VST3 bindings, the `vst3` crate — MIT or Apache-2.0, generated from Steinberg's VST 3 SDK
+  3.8.0, which is MIT.
 - The Inter typeface, embedded by `mxm-ui` — SIL Open Font License 1.1.
 - symphonia, through `mxm-audio-file-decode` — MPL-2.0, used unmodified; source at
   https://github.com/pdeljanov/Symphonia.

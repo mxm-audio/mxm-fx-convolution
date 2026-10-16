@@ -4,7 +4,7 @@ Parent: [`../AGENTS.md`](../AGENTS.md)
 
 # Purpose
 
-This repository's CLAP plugin: a thin nice-plug shell over the framework-free DSP crate —
+This repository's plugin, a CLAP and a VST3: a thin nice-plug shell over the framework-free DSP crate —
 parameters, host contract, event handling and an editor. It keeps the conventions every MXM
 plugin keeps. The full text, with the reasons, measurements and history, is mxm-kit's
 [`docs/plugin-conventions.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md);
@@ -48,6 +48,10 @@ machine only lives in its own `AGENTS.md` below.
   changed or reused. Both are public interface.
 - **nice-plug, not nih-plug** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#this-is-nice-plug-not-nih-plug)): `activate`, an
   associated `type Editor`, `nice_export_clap!`; declare `CLAP_FEATURES` and `AUDIO_IO_LAYOUTS`.
+- **A CLAP and a VST3** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#every-plugin-is-a-clap-and-a-vst3)):
+  nice-plug's `vst3` feature, `impl Vst3Plugin` and `nice_export_vst3!`; `VST3_CLASS_ID` written
+  out and permanent, `VST3_SUBCATEGORIES` from the CLAP features, both held by the kit's
+  `formats` checks. No Linux-only format and no AAX. The control map is the CLAP's alone.
 - **Parameters** ([§](https://github.com/mxm-audio/mxm-kit/blob/main/docs/plugin-conventions.md#parameters)): gain stores linear gain; skewed ranges for frequency,
   gain and wide pitch spans; a unit switch chosen from the rounded reading; sentence-case names; no
   help text on the panel (tooltips written for the player, held by `speaks_to_the_player`); a
@@ -100,7 +104,7 @@ machine only lives in its own `AGENTS.md` below.
 ```bash
 cargo test -p mxm-fx-convolution
 cargo clippy -p mxm-fx-convolution --all-targets
-cargo xtask bundle mxm-fx-convolution --release          # -> target/bundled/mxm-fx-convolution.clap
+cargo xtask bundle mxm-fx-convolution --release          # -> target/bundled/mxm-fx-convolution.clap and .vst3, installed
 clap-validator validate "target/bundled/mxm-fx-convolution.clap"
 ```
 

@@ -15,7 +15,9 @@ crate-type = ["cdylib", "lib"]
 # The starter room's late noise.
 mxm-editor.workspace = true
 mxm-rng.workspace = true
-nice-plug.workspace = true
+# `vst3` exports the VST3 as well as the CLAP (`nice_export_vst3!`); the bundler makes a `.vst3`
+# whenever the library exports one.
+nice-plug = { workspace = true, features = ["vst3"] }
 mxm-ui.workspace = true
 mxm-preset.workspace = true
 mxm-params.workspace = true
