@@ -58,3 +58,4 @@ strip = "none"
 [patch.crates-io]
 nice-plug = { git = "https://github.com/mxm-audio/nice-plug", branch = "main" }
 egui-baseview = { git = "https://github.com/mxm-audio/egui-baseview", branch = "main" }
+nice-plug-egui = { git = "https://github.com/mxm-audio/nice-plug-egui", branch = "main" }
