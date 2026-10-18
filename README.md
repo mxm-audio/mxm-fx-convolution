@@ -15,7 +15,7 @@ cargo xtask bundle mxm-fx-convolution --release   # -> target/bundled/mxm-fx-con
 cargo test
 ```
 
-The bundle installs itself, CLAP and VST3, in the standard plugin folders: on Windows
+The bundle installs itself, CLAP and VST®3, in the standard plugin folders: on Windows
 `C:\Program Files\Common Files\CLAP` and `…\VST3` (give your account write access to them once),
 on macOS `~/Library/Audio/Plug-Ins/CLAP` and `…/VST3`, on Linux `~/.clap` and `~/.vst3`.
 `MXM_CLAP_DIR` and `MXM_VST3_DIR` choose other folders, and `MXM_INSTALL_CLAP=0` turns installing
@@ -24,7 +24,8 @@ off. This is pre-alpha: nothing is released, so there are no official builds yet
 ## Licence
 
 GPL-3.0-or-later — see [`LICENSE`](LICENSE) and [`NOTICE.md`](NOTICE.md). The MXM
-name and logo are trademarks; [`TRADEMARKS.md`](TRADEMARKS.md) says how they may be used.
+name and logo are trademarks; [`TRADEMARKS.md`](TRADEMARKS.md) says how they may be used. VST is a
+registered trademark of Steinberg Media Technologies GmbH.
 
 Contributions are welcome: see [`CONTRIBUTING.md`](CONTRIBUTING.md). How the repository is
 organised, and the rules each part keeps, are in [`AGENTS.md`](AGENTS.md).
