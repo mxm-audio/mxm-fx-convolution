@@ -128,8 +128,7 @@ is a separate package so the fast tier never builds the player.
 ## Windows, Linux and macOS — all three, always
 
 **An absolute requirement.** Everything here runs on all three; a change that works on one and
-breaks another is a broken change. CI builds and tests on all three, when started by hand (the owner, 2026-10-06); before a push, Windows and Linux are checked
-locally (*Verification*).
+breaks another is a broken change. CI builds and tests on all three, only when started by hand (the owner, 2026-10-07), so Linux and macOS are checked later, together.
 
 - **Anything platform-specific is `cfg`-gated with every arm implemented**, never one arm and a
   silent nothing elsewhere.
