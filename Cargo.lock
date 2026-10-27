@@ -555,7 +555,7 @@ checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 [[package]]
 name = "baseview"
 version = "0.3.6"
-source = "git+https://github.com/mxm-audio/baseview?branch=main#c491a4bc0588cfe1a61f2bc8e7a7a32d5894a5b4"
+source = "git+https://github.com/mxm-audio/baseview?branch=main#2475da06a213121c0502323c0bc220e759644dbe"
 dependencies = [
  "block2 0.6.2",
  "bytemuck",
