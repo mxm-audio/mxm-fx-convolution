@@ -23,8 +23,8 @@ AGENTS.md is the contract; this file is the reference it links to.
   cursor, semantic response/output status, nine live bindings, release-coalesced preparation edits
   and non-destructive telemetry views.
 - `src/preset.rs` — the shared synchronous complete-payload seam, opt-in deferred model-overlay/Init
-  seam and generated Init. No factory set is compiled in: `src/impulses.rs` scans the collection's
-  impulses folder for it.
+  seam and generated Init. No preset files ship: `src/impulses.rs` scans the collection's impulses
+  folder for the factory set.
 - `control-map.json` — the existing `fx.reverb` role assigned to Mix; no invented page or role.
 - `README.md` and `Cargo.toml` — product description, crate boundary and pinned dependencies. (The
   original list also named a `LICENSE` with MIT terms; there is none in this folder, and the licence
@@ -438,7 +438,7 @@ it does now.
 
 The focused tests cover identity/bundle agreement, the impulses folder's location and Browse's
 installed-only start folder, layouts/no-note contract, the two legacy ids plus seven new live ids
-and formatter round trips, generated nine-id Init, an empty compiled factory set with the impulses
+and formatter round trips, generated nine-id Init, no shipped preset files, the impulses
 folder scanned into presets and loaded from, High cut's real 0 Hz closed bottom / real 20 kHz Open
 top mapping and old bottom-Open state migration, synchronous and production deferred durable-state
 hooks, split value/revision capture protection, sampled unmodulated per-parameter edit revisions,

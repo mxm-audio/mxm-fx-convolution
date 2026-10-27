@@ -24,7 +24,7 @@ existing convolver implementation or third-party response was opened or copied.
   resampling, deadline validation, staging of complete prepared engines, display cache, capture.
 - `src/telemetry.rs` — lock-free telemetry; `src/deferred.rs` — the deferred-preset owner;
   `src/impulses.rs` — the impulses folder; `src/editor.rs`, `src/editor/` — the editor;
-  `src/preset.rs` — the preset seams and generated Init (no factory set is compiled in).
+  `src/preset.rs` — the preset seams and generated Init (no preset files ship).
 - `control-map.json` — the existing `fx.reverb` role assigned to Mix; no invented page or role.
 - Each file in detail: [NOTES.md § Files](NOTES.md#files).
 
@@ -81,8 +81,9 @@ existing convolver implementation or third-party response was opened or copied.
 - Init is generated from CLAP defaults. In the app bar it is a deferred model overlay whose identity
   clears only after the next callback acknowledges publication; the shared synchronous Init entry
   point stays unchanged for every non-opt-in consumer ([NOTES.md § Init](NOTES.md#init)).
-- **The factory set is the impulses folder**; nothing is compiled in. Default Mix is 30 %. The
-  legacy resolver supplies Feedback zero and Pre-delay sync off for older preset files.
+- **The factory set is the impulses folder**: no `presets/`, so nothing is installed with the
+  plugin and it has no `CLAP_PRESETS` or `preset_loader`. Default Mix is 30 %. The legacy resolver
+  supplies Feedback zero and Pre-delay sync off for older preset files.
 - Selection goes through the opt-in `DeferredPresetTransaction`: rejected, cancelled and superseded
   work emits nothing; Ready writes only bases whose unmodulated bits and base revision are
   unchanged; identity follows callback acknowledgement, and edits before it stay Modified; WAV loads

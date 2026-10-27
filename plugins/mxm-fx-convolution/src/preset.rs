@@ -42,10 +42,6 @@ impl Instrument for MxmFxConvolutionParams {
         &self.preset
     }
 
-    fn factory_files(&self) -> &'static [(&'static str, &'static str)] {
-        FACTORY_FILES
-    }
-
     fn capture_preset_state(&self) -> Option<serde_json::Value> {
         Some(
             serde_json::to_value(self.response.snapshot())
@@ -100,11 +96,6 @@ impl Instrument for MxmFxConvolutionParams {
         }
     }
 }
-
-/// **No factory set is compiled in**: the factory presets are the impulse files in the collection's
-/// folder, found when the editor opens (`crate::impulses::scan`, the owner, 2026-09-28: *what is in
-/// that folder is the default presets*). Until then this was fifty parameter-only recipes.
-pub const FACTORY_FILES: &[(&str, &str)] = &[];
 
 #[cfg(test)]
 pub(crate) mod tests {
@@ -231,7 +222,10 @@ pub(crate) mod tests {
     #[test]
     fn the_compiled_factory_set_is_empty_and_init_stands_alone() {
         let params = MxmFxConvolutionParams::default();
-        assert!(FACTORY_FILES.is_empty());
+        // No preset files ship: the factory presets are the impulse files in the collection's
+        // folder, found when the editor opens (`crate::impulses::scan`, the owner, 2026-09-28).
+        let folder = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("presets");
+        assert!(!folder.exists());
         let all = factory(&params);
         assert_eq!(all.len(), 1);
         assert_eq!(all[0].name, INIT_NAME);
