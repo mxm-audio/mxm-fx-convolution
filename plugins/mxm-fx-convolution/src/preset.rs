@@ -16,6 +16,11 @@ impl Instrument for MxmFxConvolutionParams {
         crate::CLAP_ID
     }
 
+    /// The plugin's version, its `Plugin::VERSION`: its factory presets are installed for it.
+    fn version(&self) -> &'static str {
+        env!("CARGO_PKG_VERSION")
+    }
+
     fn parameters(&self) -> Vec<(&'static str, &dyn mxm_params::ErasedParam)> {
         vec![
             ("mix", &self.mix),

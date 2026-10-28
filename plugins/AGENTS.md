@@ -34,8 +34,9 @@ machine only lives in its own `AGENTS.md` below.
   through `mxm-preset` (`impl mxm_preset::Instrument`). Every instrument ships fifty factory sounds,
   an effect what its brief justifies once it has a control beyond level. Factory presets are files
   in `<crate>/presets/`, in its `order.txt`'s order, that `cargo xtask bundle` checks and installs
-  beside the `.clap` and inside the `.vst3`; the plugin reads them from where it was loaded, and
-  any CLAP host lists and loads them (`CLAP_PRESETS`, `preset_loader`). `v` is authoritative and
+  for the plugin's version in `mxm/<clap id>/factory/<version>/` under the local data
+  directory; the plugin reads them there (`Instrument::version`), and any CLAP host
+  lists and loads them (`CLAP_PRESETS`, `preset_loader`). `v` is authoritative and
   `text` never read; applying is bracketed parameter writes with the target set resolved first.
   User presets live under the injected config root, collection content under `data_local_dir`.
   Favourites are per person and sort first; dirty is a comparison.
